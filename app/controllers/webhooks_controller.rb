@@ -52,7 +52,7 @@ class WebhooksController < ApplicationController
       puts "batch exec error ..."
       p e
     end
-
+    head :ok
     puts "========OK========"
   end
   
