@@ -20,7 +20,7 @@ class WebhooksController < ApplicationController
           if event.message['text'] == "ごみ"
             message = {
               type: 'text',
-              text: notice_message
+              text: 'テスト'
             }
             client.reply_message(event['replyToken'], message)
           else
