@@ -17,11 +17,19 @@ class WebhooksController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: event.message['text']
-          }
-          client.reply_message(event['replyToken'], message)
+          if event.message['text'] == "ごみ"
+            message = {
+              type: 'text',
+              text: GomiChecker.notice_message
+            }
+            client.reply_message(event['replyToken'], message)
+          else
+            message = {
+              type: 'text',
+              text: event.message['text']
+            }
+            client.reply_message(event['replyToken'], message)
+          end
         end
       end
     }
