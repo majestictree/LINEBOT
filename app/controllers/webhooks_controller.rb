@@ -20,7 +20,7 @@ class WebhooksController < ApplicationController
           if event.message['text'] == "ごみ"
             message = {
               type: 'text',
-              text: GomiChecker.notice_message
+              text: notice_message
             }
             client.reply_message(event['replyToken'], message)
           else
