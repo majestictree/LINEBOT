@@ -41,20 +41,13 @@ class WebhooksController < ApplicationController
     def push_ids
       ENV['PUSH_TO_ID'].split(',')
     end
-
-    begin
-      message = {
-        type: 'text',
-        text: notice_message
+    message = {
+      type: 'text',
+      text: notice_message
       }
-      push_ids.each { |id| client.push_message(id, message) }
+    push_ids.each { |id| client.push_message(id, message) }
 
-    rescue => e
-      puts "batch exec error ..."
-      p e
-    end
     head :ok
-    puts "========OK========"
   end
   
 
