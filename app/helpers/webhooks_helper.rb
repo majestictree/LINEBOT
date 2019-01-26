@@ -36,6 +36,6 @@ module WebhooksHelper
     # when :not_burnable_garbage then '不燃ごみの日です'
     else '特に出せるゴミはありません'
     end
-    "明日(#{target_day.strftime("%m月%d日 %a")})は、#{message}"
+    "今日(#{target_day.strftime("%m月%d日 %a")})は、#{message}"
   end
 end
