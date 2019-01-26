@@ -1,7 +1,7 @@
 require 'line/bot'
 
 class WebhooksController < ApplicationController
-  protect_from_foregery expect: :callback
+  protect_from_forgery expect: :callback
 
   def callback
     body = request.body.read
