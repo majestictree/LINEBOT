@@ -38,14 +38,14 @@ class WebhooksController < ApplicationController
   end
 
   def push
-    def push_ids
-      ENV['PUSH_TO_ID'].split(',')
-    end
+    
+    id = ENV['PUSH_TO_ID']
+    
     message = {
       type: 'text',
       text: notice_message
       }
-    push_ids.each { |id| client.push_message(id, message) }
+    client.push_message(id, message)
 
     head :ok
   end
