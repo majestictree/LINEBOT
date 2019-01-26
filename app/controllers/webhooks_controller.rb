@@ -47,7 +47,7 @@ class WebhooksController < ApplicationController
         type: 'text',
         text: notice_message
       }
-      push_ids.each { |id| client.push(id, message) }
+      push_ids.each { |id| client.push_message(id, message) }
 
     rescue => e
       puts "batch exec error ..."
