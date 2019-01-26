@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  root 'webhooks#push'
   post '/callback' => 'webhooks#callback'
+  root 'webhooks#push'
 end

@@ -38,10 +38,6 @@ class WebhooksController < ApplicationController
   end
 
   def push
-    def client
-      @client ||= LineClient.new
-    end
-
     def push_ids
       ENV['PUSH_TO_ID'].split(',')
     end
@@ -52,6 +48,7 @@ class WebhooksController < ApplicationController
         text: notice_message
       }
       push_ids.each { |id| client.push(id, message) }
+
     rescue => e
       puts "batch exec error ..."
       p e
