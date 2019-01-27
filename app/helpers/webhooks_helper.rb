@@ -33,11 +33,11 @@ module WebhooksHelper
       @target_day = Date.today
       "今日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     elsif day == 'tomorrow'
-      @target_day = Date.tomorrow
+      @target_day = Date.today + 1
       "明日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     end
   end
-  
+
   def message
     case check
       when :burnable_garbage     then '燃えるゴミとスプレー缶類を捨てれます'
