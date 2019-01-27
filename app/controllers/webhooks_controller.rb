@@ -20,7 +20,7 @@ class WebhooksController < ApplicationController
           if event.message['text'] == "ごみ"
             message = {
               type: 'text',
-              text: notice_message
+              text: notice_message('tomorrow')
             }
             client.reply_message(event['replyToken'], message)
           else
@@ -33,7 +33,6 @@ class WebhooksController < ApplicationController
         end
       end
     }
-
     head :ok
   end
 
