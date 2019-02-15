@@ -3,21 +3,18 @@ class WebhooksController < ApplicationController
   protect_from_forgery expect: [:callback, :push]
 
   def callback
-    events.each { |event|
-      case event
-      when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-          if event.message['text'] == "ごみ"
-            reply_message_to(event, notice_message('tomorrow'))
-          else
-            reply_message_to(event, event.message['text'])
-          end
-        end
+    events.each do |event|
+      case event.message['text']
+      when "ごみ" then
+        reply_message_to(event, notice_message('tommorow'))
+      when "帰る" then
+        reply_message_to(event, bus_message)
+      else
+        reply_message_to(event, event.message['text'])
       end
-    }
+    end
     head :ok
-    puts "=========OK========"
+    puts '========OK========='
   end
 
   def push

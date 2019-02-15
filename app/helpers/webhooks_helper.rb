@@ -3,6 +3,9 @@ module WebhooksHelper
     @client ||= Line::Bot::Client.new{ |config|
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+      # ローカル用
+      # config.channel_secret = "[Channel secret]"
+      # config.channel_token = "[アクセストークン(ろんぐターム)]"
     }
   end
 
