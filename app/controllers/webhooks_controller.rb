@@ -6,7 +6,7 @@ class WebhooksController < ApplicationController
     events.each do |event|
       case event.message['text']
       when "ごみ" then
-        reply_message_to(event, notice_message('tommorow'))
+        reply_message_to(event, notice_message('tomorrow'))
       when "帰る" then
         reply_message_to(event, bus_message)
       else

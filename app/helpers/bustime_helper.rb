@@ -1,4 +1,4 @@
-module Bustime
+module BustimeHelper
   def bus_message
     next_bus = Bus.where('time > ?', Time.now.to_s(:time)).order(time: :asc)[0..5]
   
