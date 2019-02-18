@@ -9,6 +9,8 @@ class WebhooksController < ApplicationController
         reply_message_to(event, notice_message('tomorrow'))
       when "帰る" then
         reply_message_to(event, bus_message)
+      when "大麻" then
+        reply_message_to(event, train_message)
       else
         reply_message_to(event, event.message['text'])
       end
