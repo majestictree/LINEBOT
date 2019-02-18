@@ -33,17 +33,26 @@ module TraintimeHelper
       i = i + 1
     end
 
-    start_index = schedules.bsearch_index { |time| time > DateTime.parse(Time.now.to_s) }
+    timeNow = DateTime.parse(Time.now.to_s)
+    start_index = schedules.bsearch_index { |time| time > timeNow }
     next_trains = schedules[start_index, 5]
 
     message = <<~"EOS"
-      このあと大麻駅から出発する電車は
-      #{next_trains[0].strftime("%H:%M")} 発
-      #{next_trains[1].strftime("%H:%M")} 発
-      #{next_trains[2].strftime("%H:%M")} 発
-      #{next_trains[3].strftime("%H:%M")} 発
-      #{next_trains[4].strftime("%H:%M")} 発
+      このあと
+      大麻駅から出発する電車は
+      #{next_trains[0].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[0])}分後
+      #{next_trains[1].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[1])}分後
+      #{next_trains[2].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[2])}分後
+      #{next_trains[3].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[3])}分後
+      #{next_trains[4].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[4])}分後
     EOS
     message.chomp
+  end
+
+  def train_time_later(next_train)
+    unless next_train == nil
+      timeNow = DateTime.parse(Time.now.to_s)
+      (next_train.hour - timeNow.hour) * 60 + next_train.min - timeNow.min
+    end
   end
 end
