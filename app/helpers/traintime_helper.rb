@@ -3,26 +3,21 @@ module TraintimeHelper
 
   def train_message
     url = "http://www.ekikara.jp/newdata/ekijikoku/0101013/up1_01217011.htm"
+    html = open(url).read
+    doc = Nokogiri::HTML.parse(html, nil, "CP932")
 
-    charset = nil
-    html = open(url) do |f|
-      charset = f.charset
-      f.read
+    hours = doc.xpath('//td[@class="lowBg06"]').map { |node|
+      node.css('span[@class="l"]').inner_text }
+    hours.delete("")
+
+    minutes = doc.xpath('//td[@class="lowBgFFF" or @class="lowBg12"]').map { |node|
+      node.css('span[@class="ll"]').inner_text.scan(/.{1,2}/) }
+    minutes.delete("")
+
+    bound_for = doc.xpath('//td[@class="lowBgFFF" or @class="lowBg12"]').map do |node|
+      node.css('span[@class="s"]').map { |c| c.inner_text }
     end
-
-    doc = Nokogiri::HTML.parse(html, nil,charset)
-
-    hours = []
-    doc.xpath('//td[@class="lowBg06"]').each do |node|
-      tex =  node.css('span[@class="l"]').inner_text.to_i
-      hours << tex unless tex == 0
-    end
-
-    minutes = []
-    doc.xpath('//td[@class="lowBgFFF" or @class="lowBg12"]').each do |node|
-      tex = node.css('span[@class="ll"]').inner_text.scan(/.{1,2}/)
-      minutes << tex unless tex == ""
-    end
+    bound_for.flatten!.delete("◆")
 
     i = 0
     schedules = []
@@ -36,23 +31,15 @@ module TraintimeHelper
     timeNow = DateTime.parse(Time.now.to_s)
     start_index = schedules.bsearch_index { |time| time > timeNow }
     next_trains = schedules[start_index, 5]
+    some_bound_for = bound_for[start_index, 5]
+    next_train_and_bound_for = next_trains.zip(some_bound_for)
 
     message = ""
-    next_trains.each do |next_train|
-      message << next_train.strftime("%H:%M") + " 発  " + train_time_later(next_train).to_s + " 分後\n"
+    next_train_and_bound_for.each do |m|
+      message << "#{m[0].strftime("%H:%M")}発  [#{m[1]}]  #{train_time_later(m[0])}分後\n"
     end
 
     "このあと\n大麻駅から出発する電車は\n" + message.chomp
-    # message = <<~"EOS"
-    #   このあと
-    #   大麻駅から出発する電車は
-    #   #{next_trains[0].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[0])}分後
-    #   #{next_trains[1].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[1])}分後
-    #   #{next_trains[2].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[2])}分後
-    #   #{next_trains[3].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[3])}分後
-    #   #{next_trains[4].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[4])}分後
-    # EOS
-    # message.chomp
   end
 
   def train_time_later(next_train)
