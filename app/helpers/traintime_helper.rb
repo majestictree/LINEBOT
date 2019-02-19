@@ -37,16 +37,22 @@ module TraintimeHelper
     start_index = schedules.bsearch_index { |time| time > timeNow }
     next_trains = schedules[start_index, 5]
 
-    message = <<~"EOS"
-      このあと
-      大麻駅から出発する電車は
-      #{next_trains[0].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[0])}分後
-      #{next_trains[1].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[1])}分後
-      #{next_trains[2].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[2])}分後
-      #{next_trains[3].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[3])}分後
-      #{next_trains[4].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[4])}分後
-    EOS
-    message.chomp
+    message = ""
+    next_trains.each do |next_train|
+      message << next_train.strftime("%H:%M") + " 発  " + train_time_later(next_train).to_s + " 分後\n"
+    end
+
+    "このあと\n大麻駅から出発する電車は\n" + message.chomp
+    # message = <<~"EOS"
+    #   このあと
+    #   大麻駅から出発する電車は
+    #   #{next_trains[0].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[0])}分後
+    #   #{next_trains[1].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[1])}分後
+    #   #{next_trains[2].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[2])}分後
+    #   #{next_trains[3].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[3])}分後
+    #   #{next_trains[4].try(:strftime, "%H:%M")} 発　#{train_time_later(next_trains[4])}分後
+    # EOS
+    # message.chomp
   end
 
   def train_time_later(next_train)
