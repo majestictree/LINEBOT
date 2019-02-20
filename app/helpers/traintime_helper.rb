@@ -2,22 +2,27 @@ module TraintimeHelper
   require 'open-uri'
 
   def train_message
-    url = "http://www.ekikara.jp/newdata/ekijikoku/0101013/up1_01217011.htm"
-    html = open(url).read
-    doc = Nokogiri::HTML.parse(html, nil, "CP932")
-
-    hours = doc.xpath('//td[@class="lowBg06"]').map { |node|
-      node.css('span[@class="l"]').inner_text }
-    hours.delete("")
-
-    minutes = doc.xpath('//td[@class="lowBgFFF" or @class="lowBg12"]').map { |node|
-      node.css('span[@class="ll"]').inner_text.scan(/.{1,2}/) }
-    minutes.delete("")
-
-    bound_for = doc.xpath('//td[@class="lowBgFFF" or @class="lowBg12"]').map do |node|
-      node.css('span[@class="s"]').map { |c| c.inner_text }
+    url = "https://roote.ekispert.net/ja/timetable/20070/50"
+    charset = nil
+    html = open(url) do |f|
+      charset = f.charset
+      f.read
     end
-    bound_for.flatten!.delete("◆")
+
+    doc = Nokogiri::HTML.parse(html, nil, charset)
+
+    hours = []
+    minutes = []
+    doc.xpath('//*[@id="timetable_weekdays"]/table/tr').each do |node|
+      hours << node.xpath('.//th').inner_text
+      node.xpath('.//td/ul').each do |n|
+        minutes << n.xpath('.//li/text()').map { |t| t.inner_text }
+      end
+    end
+
+    bound_for = doc.xpath('//*[@id="timetable_weekdays"]/table/tr/td/ul/li/span').map do |node|
+      node.inner_text
+    end
 
     i = 0
     schedules = []
