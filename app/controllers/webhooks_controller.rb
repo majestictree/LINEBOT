@@ -10,7 +10,9 @@ class WebhooksController < ApplicationController
       when "帰る" then
         reply_message_to(event, bus_message)
       when "大麻" then
-        reply_message_to(event, train_message)
+        reply_message_to(event, train_message_ooasa)
+      when "野幌" then
+        reply_message_to(event, train_message_nopporo)
       else
         reply_message_to(event, event.message['text'])
       end
