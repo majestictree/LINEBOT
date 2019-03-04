@@ -41,7 +41,7 @@ module TraintimeHelper
 
     message = ""
     next_train_and_bound_for.each do |m|
-      message << "#{m[0].strftime("%H:%M")}発  [#{m[1]}]  #{train_time_later(m[0])}分後\n"
+      message << "#{m[0].strftime("%H:%M")}発  #{m[1]}  #{train_time_later(m[0])}分後\n"
     end
 
     "このあと\n大麻駅から出発する電車は\n" + message.chomp
@@ -87,7 +87,7 @@ module TraintimeHelper
 
     message = ""
     next_train_and_bound_for.each do |m|
-      message << "#{m[0].strftime("%H:%M")}発  [#{m[1]}]  #{train_time_later(m[0])}分後\n"
+      message << "#{m[0].strftime("%H:%M")}発  #{m[1]}  #{train_time_later(m[0])}分後\n"
     end
 
     "このあと\n野幌駅から出発する電車は\n" + message.chomp
