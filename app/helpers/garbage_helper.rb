@@ -1,19 +1,18 @@
 module GarbageHelper
   def burnable_garbage?
-    @target_day.tuesday? || @target_day.friday?
+    @target_day.monday? || @target_day.thursday?
   end
 
   def recyclable_garbage?
-    @target_day.wednesday?
+    @target_day.friday?
   end
 
   def bottle_can_garbage?
-    @target_day.monday?
+    @target_day.tuesday?
   end
 
   def not_burnable_garbage?
-    now = @target_day
-    now.wednesday? && mweek(now) == 3
+    @target_day.wednesday?
   end
 
   def check
@@ -27,7 +26,7 @@ module GarbageHelper
   def notice_message(day = 'today')
     if day == 'today'
       @target_day = Date.today
-      "今日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
+      "(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     elsif day == 'tomorrow'
       @target_day = Date.today + 1
       "明日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
@@ -36,10 +35,10 @@ module GarbageHelper
 
   def message
     case check
-      when :burnable_garbage     then '燃えるゴミとスプレー缶類を捨てれます'
-      when :recyclable_garbage   then '雑がみが捨てれます'
+      when :burnable_garbage     then '燃えるゴミを捨てれます'
+      when :recyclable_garbage   then '資源プラスチック類が捨てれます'
       when :bottle_can_garbage   then '缶・ビン・ペットボトルを捨てれる日です'
-      when :not_burnable_garbage then '不燃ごみ・乾電池・ライターを捨てれる日です'
+      when :not_burnable_garbage then '不燃ごみを捨てれる日です'
     else '特に出せるゴミはありません'
     end
   end
