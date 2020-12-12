@@ -28,7 +28,7 @@ module GarbageHelper
       @target_day = Date.today
       "(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     elsif day == 'tomorrow'
-      @target_day = Date.today + 2
+      @target_day = Date.today + ３
       "明日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     end
   end
