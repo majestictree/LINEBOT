@@ -30,6 +30,9 @@ module GarbageHelper
     elsif day == 'tomorrow'
       @target_day = Date.today + 1
       "明日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
+    elsif day == '2daysago'
+      @target_day = Date.today + 2
+      "明後日(#{@target_day.strftime("%m月%d日 %a")})は、#{message}"
     end
   end
 

@@ -7,6 +7,8 @@ class WebhooksController < ApplicationController
       case event.message['text']
       when "ごみ" then
         reply_message_to(event, notice_message('tomorrow'))
+      when "明後日" then
+        reply_message_to(event, notice_message('2daysago'))
       when "帰る" then
         reply_message_to(event, bus_message)
       when "大麻" then
