@@ -1,6 +1,6 @@
 module GarbageHelper
   def burnable_garbage?
-    @target_day.monday? || @target_day.thursday?
+    @target_day.tuesday? || @target_day.friday?
   end
 
   def recyclable_garbage?
@@ -8,11 +8,11 @@ module GarbageHelper
   end
 
   def bottle_can_garbage?
-    @target_day.tuesday?
+    @target_day.thursday?
   end
 
   def not_burnable_garbage?
-    @target_day.wednesday?
+    @target_day.monday?
   end
 
   def check
